@@ -249,30 +249,16 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 
 			if ( Settings::Fill )
 			{
-				SDK::UTexture2D* DefaultTexture = Canvas->DefaultTexture( );
-				Canvas->K2_DrawTexture( DefaultTexture , SDK::FVector2D( MostLeft , MostTop ) , SDK::FVector2D( ActorWidth , ActorHeight ) , SDK::FVector2D( ) , SDK::FVector2D( 1.0 , 1.0 ) , SDK::FLinearColor( 0.0f , 0.0f , 0.0f , 0.20f ) , SDK::EBlendMode::BLEND_Translucent , 0.f , SDK::FVector2D( ) );
+				// No filled boxes for you
 			}
 
 			if ( Settings::Boxes == 1 )
 			{
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostTop ) , SDK::FVector2D( MostRight , MostTop ) , 1.f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostBottom ) , SDK::FVector2D( MostRight , MostBottom ) , 1.f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostBottom ) , SDK::FVector2D( MostLeft , MostTop ) , 1.f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostRight , MostTop ) , SDK::FVector2D( MostRight , MostBottom ) , 1.f , BoxColor );
+				// No 2D Boxes for you
 			}
 			else if ( Settings::Boxes == 2 )
 			{
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostTop ) , SDK::FVector2D( MostLeft , MostTop + CornerHeight ) , 1.5f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostTop ) , SDK::FVector2D( MostLeft + CornerWidth , MostTop ) , 1.5f , BoxColor );
-
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft + ActorWidth - CornerWidth , MostTop ) , SDK::FVector2D( MostLeft + ActorWidth , MostTop ) , 1.5f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft + ActorWidth , MostTop ) , SDK::FVector2D( MostLeft + ActorWidth , MostTop + CornerHeight ) , 1.5f , BoxColor );
-
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostTop + ActorHeight - CornerHeight ) , SDK::FVector2D( MostLeft , MostTop + ActorHeight ) , 1.5f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft , MostTop + ActorHeight ) , SDK::FVector2D( MostLeft + CornerWidth , MostTop + ActorHeight ) , 1.5f , BoxColor );
-
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft + ActorWidth - CornerWidth , MostTop + ActorHeight ) , SDK::FVector2D( MostLeft + ActorWidth , MostTop + ActorHeight ) , 1.5f , BoxColor );
-				Canvas->K2_DrawLine( SDK::FVector2D( MostLeft + ActorWidth , MostTop + ActorHeight - CornerHeight ) , SDK::FVector2D( MostLeft + ActorWidth , MostTop + ActorHeight ) , 1.5f , BoxColor );
+				// No conrer boxes for you
 			}
 
 			if ( Settings::Line )
@@ -312,9 +298,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 									DisplayName = SDK::StringLibrary->BuildString_Int( DisplayName , SDK::FString( ) , MaxAmmo , SDK::FString( L")" ) );
 								}
 
-								SDK::TSoftObjectPtr <SDK::UTexture2D> SmallPreviewImage = WeaponData->GetSmallPreviewImage( );
-								SDK::UTexture* Texture = SDK::UObject::LoadObject<SDK::UTexture*>( SDK::StringLibrary->Conv_NameToString( SmallPreviewImage.ObjectID.AssetPathName ).c_str( ) );
-								//Canvas->K2_DrawTexture( Texture , SDK::FVector2D( BottomMiddle.X - 20.0 , MostBottom + ( BottomTextOffset + LegacyFontSize + 20.0 ) ) , SDK::FVector2D( 35.0 , 35.0 ) , SDK::FVector2D( ) , SDK::FVector2D( 1.0 , 1.0 ) , SDK::FLinearColor( 1.f , 1.f , 1.f , 1.f ) , SDK::EBlendMode::BLEND_Translucent , 0.f , SDK::FVector2D( ) );
+								// No Weapon Icon ESP for you
 								Canvas->K2_DrawText( Implementation::Font , DisplayName , SDK::FVector2D( BottomMiddle.X , MostBottom + BottomTextOffset ) , RenderColor , true , false , true );
 
 								BottomTextOffset += LegacyFontSize;
@@ -396,16 +380,13 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 									{
 										if ( CurrentWeapon->CanFire( ) && IsHoldingShotgun )
 										{
-											AcknowledgedPawn->PawnStartFire( );
-											AcknowledgedPawn->PawnStopFire( );
+											// No Trigger bot for you
 										}
 									}
 
 									if ( Settings::KillAll )
 									{
-										SDK::USceneComponent* RootComponent = Target->RootComponent( );
-										SDK::FVector TeleportLocation = AcknowledgedPawn->K2_GetActorLocation( ) + SDK::FVector( 30.0 , 30.0 , 30.0 );
-										*( SDK::FVector* ) ( RootComponent + 0x1E0 ) = TeleportLocation;
+										// No Kill All for you
 									}
 
 									if ( Settings::AimPrediction )
@@ -432,23 +413,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 										bool HasLightweightProjectile = ItemDefinition->HasLightweightProjectile( );
 										if ( HasLightweightProjectile )
 										{
-											double ProjectileSpeed = CurrentWeapon->GetProjectileSpeed( );
-											double ProjectileGravity = CurrentWeapon->GetProjectileGravity( );
-
-											double TimeToTarget = PlayerDistance / ProjectileSpeed;
-
-											AimbotPosition.X += RelativeVelocity.X * TimeToTarget;
-											AimbotPosition.Y += RelativeVelocity.Y * TimeToTarget;
-
-											double Difference = StartLocation.Z - AimbotPosition.Z;
-											double HorizontalDistance = SDK::MathLibrary->sqrt( SDK::MathLibrary->Pow( StartLocation.X - AimbotPosition.X , 2.0 ) + SDK::MathLibrary->Pow( StartLocation.Y - AimbotPosition.Y , 2.0 ) );
-											double VerticalAngle = SDK::MathLibrary->Atan2( SDK::MathLibrary->abs( Difference ) , HorizontalDistance );
-
-											double Angle = VerticalAngle * ( 180.0 / M_PI );
-											double Factor = SDK::MathLibrary->abs( Angle - 90.0 ) / 90.0;
-											ProjectileGravity *= Factor;
-
-											AimbotPosition.Z += RelativeVelocity.Z * TimeToTarget + ( SDK::MathLibrary->abs( ProjectileGravity * -980.0 ) * ( TimeToTarget * TimeToTarget ) ) * 0.5;
+											// No prediction for you
 										}
 
 										if ( Settings::HeadDot )
@@ -530,41 +495,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 			{
 				if ( Settings::NoSpread )
 				{
-					auto ZeroReticle = [ ]( SDK::AFortWeapon* CurrentWeapon , unsigned short ValueOffset , unsigned short TableOffset )
-						{
-							auto ValueIndex = *( unsigned char* ) ( CurrentWeapon + TableOffset + 1 ) - ValueOffset;
-							auto TableIndex = *( unsigned char* ) ( CurrentWeapon + TableOffset );
-							auto TableEntry = ( CurrentWeapon + TableIndex * sizeof( unsigned long ) + TableOffset - 0x10 );
-
-							auto SpreadKey = ValueIndex & 0x82FFFFFE | 0x4C000001;
-							auto TableValue = *( int* ) ( TableEntry );
-
-							auto SpreadUInt = SpreadKey ^ TableValue;
-							auto CurrentSpread = *( float* ) ( &SpreadUInt );
-
-							if ( CurrentSpread < 0.0f )
-							{
-								return;
-							}
-
-							float Value = 0.135f;
-							auto RealValue = *( int* ) ( &Value ) ^ SpreadKey;
-							*( int* ) ( TableEntry ) = RealValue;
-						};
-
-					static const ReticlePair Pairs[ ] = {
-					{ 0xA1D2, 0x1BC6 },
-					{ 0xE572, 0x1BD8 },
-					{ 0xE572, 0x1B62 },
-					{ 0xE572, 0x1B74 },
-					{ 0xE572, 0x1B86 },
-					{ 0xE572, 0x1B98 },
-					};
-
-					for ( auto& RetPair : Pairs )
-					{
-						ZeroReticle( CurrentWeapon , RetPair.TableValue , RetPair.TableOffset );
-					}
+					// No no-spread for you
 				}
 
 				if ( Settings::BulletTP )
@@ -591,37 +522,14 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 
 						Canvas->K2_DrawLine( MuzzlePosition , ScreenLocation , 1.5f , SDK::FromRGB( 237 , 32 , 118 ) );
 
-						if ( Update__GetControlRotation__bAimbotActive && Update__GetControlRotation__AimbotRotationTarget )
-						{
-							Projectile->K2_SetActorLocation( Update__GetControlRotation__AimbotLocationTarget , false, true );
-						}
+						// No projectile TP for you
 					}
 				}
 			}
 
 			if ( Settings::LeProxy )
 			{
-				SDK::TArray <SDK::ULevel*> Levels = World->Levels( );
-				for ( int32_t i = 0; i < Levels.NumElements; i++ )
-				{
-					SDK::ULevel* Level = Levels[ i ];
-					if ( !Level ) continue;
-
-					SDK::TArray <SDK::AActor*> Actors = Level->Actors( );
-					for ( int32_t xi = 0; xi < Actors.NumElements; xi++ )
-					{
-						SDK::AActor* Actor = Actors[ xi ];
-						if ( !Actor ) continue;
-
-						SDK::FVector2D ScreenLocation = SDK::FVector2D( );
-						SDK::FVector WorldLocation = Actor->K2_GetActorLocation( );
-						if ( !Custom::K2_Project( WorldLocation , &ScreenLocation ) ) continue;
-						if ( !Custom::InScreen( ScreenLocation ) ) continue;
-
-						SDK::FString PathName = SDK::SystemLibrary->GetPathName( Actor );
-						Canvas->K2_DrawText( Implementation::Font , PathName , ScreenLocation , SDK::FLinearColor( 1.f , 1.f , 1.f , 1.f ) , true , false , false );
-					}
-				}
+				// No debug objects for you
 			}
 
 			if ( Settings::PickupESP )
@@ -685,12 +593,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 
 					Canvas->K2_DrawText( Implementation::Font , SDK::FString( L"Vehicle" ) , ScreenLocation , SDK::FLinearColor( 0.2f , 0.3f , 0.7f , 1.f ) , true , false , false );
 
-					SDK::FString HealthText = SDK::StringLibrary->BuildString_Int( SDK::FString( ) , SDK::FString( L"(" ) , int( Vehicle->GetHealth( ) ) , SDK::FString( L"/" ) );
-					HealthText = SDK::StringLibrary->BuildString_Int( HealthText , SDK::FString( ) , int( Vehicle->GetMaxHealth( ) ) , SDK::FString( L"HP)" ) );
-					Canvas->K2_DrawText( Implementation::Font , HealthText , SDK::FVector2D( ScreenLocation.X , ScreenLocation.Y + ( LegacyFontSize ) ) , SDK::FLinearColor( 0.f , 1.f , 0.f , 1.f ) , true , false , false );
-
-					SDK::FString ConvertedText = SDK::StringLibrary->BuildString_Double( SDK::FString( ) , SDK::FString( L"(" ) , int( Distance ) , SDK::FString( L")" ) );
-					Canvas->K2_DrawText( Implementation::Font , ConvertedText , SDK::FVector2D( ScreenLocation.X , ScreenLocation.Y + ( LegacyFontSize + LegacyFontSize ) ) , SDK::FLinearColor( 0.2f , 0.3f , 0.7f , 1.f ) , true , false , false );
+					// No vehicle health esp for you
 				}
 			}
 
@@ -719,7 +622,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 
 					if ( Settings::InstantSearch )
 					{
-						ShadowVMT( ).Hook( Container , 225 , GetSearchTime , &GetSearchTimeOriginal );
+						// No instant interaction for you
 					}
 
 					SDK::FString ObjectName = SDK::SystemLibrary->GetObjectName( Container );
@@ -902,9 +805,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 
 				Canvas->K2_DrawText( Implementation::Font , SDK::FString( L"Building Trap" ) , ScreenLocation , SDK::FLinearColor( 0.f , 0.5f , 1.f , 1.f ) , true , false , false );
 
-				float ArmTime = BuildingTrap->GetArmTime( );
-				SDK::FString ArmTimeText = SDK::StringLibrary->BuildString_Double( SDK::FString( L"Arm Time (" ) , SDK::FString( ) , int( ArmTime ) , SDK::FString( L")" ) );
-				Canvas->K2_DrawText( Implementation::Font , ArmTimeText , SDK::FVector2D( ScreenLocation.X , ScreenLocation.Y + LegacyFontSize ) , SDK::FLinearColor( 0.f , 1.f , 0.f , 1.f ) , true , false , false );
+				// No health ESP for you
 
 				SDK::FString ConvertedText = SDK::StringLibrary->BuildString_Double( SDK::FString( ) , SDK::FString( L"(" ) , int( Distance ) , SDK::FString( L")" ) );
 				Canvas->K2_DrawText( Implementation::Font , ConvertedText , SDK::FVector2D( ScreenLocation.X , ScreenLocation.Y + ( LegacyFontSize + LegacyFontSize ) ) , SDK::FLinearColor( 0.f , 1.f , 0.f , 1.f ) , true , false , false );
@@ -931,26 +832,7 @@ void DrawTransition( SDK::UGameViewportClient* ViewportClient , SDK::UCanvas* Ca
 				HighlightedPrimaryBuilding->SetQuestHighlight( true );
 				HighlightedPrimaryBuilding->SetSuppressHealthBar( true );
 
-				SDK::EFortBuildingType BuildingType = HighlightedPrimaryBuilding->BuildingType( );
-				SDK::FString BuildName = Custom::GetBuildByType( BuildingType );
-				Canvas->K2_DrawText( Implementation::Font , BuildName , ScreenLocation , SDK::FLinearColor( 1.0f , 0.5f , 0.0f , 1.0f ) , true , false , false );
-
-				float CurrentHealth = HighlightedPrimaryBuilding->GetHealth( );
-				float MaxHealth = HighlightedPrimaryBuilding->GetMaxHealth( );
-
-				double CurrentPercentage = static_cast< double >( CurrentHealth / MaxHealth );
-				SDK::FVector2D BarSize = SDK::FVector2D( 220.0 , 13.0 );
-
-				float Green = 255.f * CurrentPercentage;
-				float Red = 255.f - Green;
-				Red /= 255.f;
-				Green /= 255.f;
-
-				SDK::FLinearColor BarColor = SDK::FLinearColor( Red , Green , 0.f , 1.f );
-				SDK::FVector2D BarPosition = SDK::FVector2D( ScreenLocation.X , ScreenLocation.Y + BarSize.Y );
-
-				Radar::DrawRect( BarPosition , BarSize , SDK::FromRGB( 35 , 46 , 50 ) , 1.f );
-				Radar::DrawRectFilled( BarPosition , SDK::FVector2D( BarSize.X * CurrentPercentage , BarSize.Y ) , BarColor , 1.f );
+				// No health ESP for you
 			}
 		}
 	}
