@@ -1,7 +1,6 @@
 
-This source was leaked due to many people selling it and saying its their private p2c.
-The soucre was owned by leproxy and me (visual) please stay away from anyone selling this as its pasted from us
-
+This source was leaked due to many people selling it and saying it was their private P2C.
+The soucre was developed by LeProxy and owned/made for Viusal's P2C (Ecstasy) please stay away from anyone selling this source
 
 
 
