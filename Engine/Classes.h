@@ -39,7 +39,7 @@ namespace SDK
 		{
 			if ( auto VTable = *( void*** ) this )
 			{
-				reinterpret_cast< void( __cdecl* )( UObject* , UObject* , void* ) >( VTable[ 78 ] )( this , UFunction , Params );
+				reinterpret_cast< void( __cdecl* )( UObject* , UObject* , void* ) >( VTable[ 789 ] )( this , UFunction , Params );
 			}
 		}
 
@@ -48,8 +48,7 @@ namespace SDK
 			static void* Address = nullptr;
 			if ( !Address )
 			{
-				auto Enc_Mask = Encrypt( "xxxx?xxxxxxxxxxxxxxx????xxx????xxx????xxxxxx????xxx" );
-				auto Enc_Pattern = Encrypt( "\x48\x89\x5C\x24\x00\x55\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xAC\x24\x00\x00\x00\x00\x48\x81\xEC\x00\x00\x00\x00\x48\x8B\x05\x00\x00\x00\x00\x48\x33\xC4\x48\x89\x85\x00\x00\x00\x00\x48\x83\xFA" );
+				// No signature for you
 				Address = ( void* ) ( Signature( ).Find( Enc_Pattern.decrypt( ) , Enc_Mask.decrypt( ) ) ) , Enc_Pattern.clear( ) , Enc_Mask.clear( );
 			}
 
@@ -61,8 +60,7 @@ namespace SDK
 			static void* Address = nullptr;
 			if ( !Address )
 			{
-				auto Enc_Mask = Encrypt( "xxxxxxxxxxxxxxxxx????xxx????xxx????xxxxxx????xxx????xxxxxx" );
-				auto Enc_Pattern = Encrypt( "\x40\x55\x53\x56\x57\x41\x54\x41\x55\x41\x56\x41\x57\x48\x8D\xAC\x24\x00\x00\x00\x00\x48\x81\xEC\x00\x00\x00\x00\x48\x8B\x05\x00\x00\x00\x00\x48\x33\xC4\x48\x89\x85\x00\x00\x00\x00\x48\x8B\x85\x00\x00\x00\x00\x45\x33\xE4\x4C\x8B\xB5" );
+				// No signature for you
 				Address = ( void* ) ( Signature( ).Find( Enc_Pattern.decrypt( ) , Enc_Mask.decrypt( ) ) ) , Enc_Pattern.clear( ) , Enc_Mask.clear( );
 			}
 
