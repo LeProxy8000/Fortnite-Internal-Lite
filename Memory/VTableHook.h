@@ -29,25 +29,14 @@ public:
 			if ( Index < this->VTableSize )
 			{
 				// Allocate memory for the fake virtual table
-				this->AllocatedVTable = reinterpret_cast< uintptr_t* >( SDK::FMemory::Malloc( this->VTableSize * sizeof( uintptr_t ) , 0x10 ) );
 
 				// Copy the virtual table's contents to the fake virtual table
-				for ( int i = 0; i < this->VTableSize; i++ )
-				{
-					this->AllocatedVTable[ i ] = this->VirtualTable[ i ];
-				}
-
-				*Original = reinterpret_cast< Type >( this->VirtualTable[ Index ] );
 
 				// Replace the target function with our function in the fake virtual table
-				this->AllocatedVTable[ Index ] = reinterpret_cast< uintptr_t >( Function );
-
+				
 				// Write the target virtual table to our fake virtual table
-				*( uintptr_t** ) ( Address ) = this->AllocatedVTable;
 
 				// Pushback data
-				this->LastHookedFunctionAddress = reinterpret_cast< uintptr_t >( Function );
-				this->LastHookedFunctionIndex = Index;
 
 				return true;
 			}
@@ -62,16 +51,12 @@ public:
 		if ( this->VirtualTable && this->LastHookedFunctionIndex )
 		{
 			// Get the our fake virtual table
-			uintptr_t* VirtualTable = *( uintptr_t** ) ( Address );
 
 			// Restore the last hooked function in our fake virtual table with the original
-			VirtualTable[ this->LastHookedFunctionIndex ] = reinterpret_cast< uintptr_t >( *Original );
 
 			// Write the target virtual table with the old virtual table
-			*( uintptr_t** ) Address = VirtualTable;
 
 			// Free fake virtual table for memory leaks
-			SDK::FMemory::Free( VirtualTable );
 
 			this->LastHookedFunctionAddress = 0x0;
 			this->LastHookedFunctionIndex = -1;
