@@ -1,6 +1,6 @@
 
 This source was leaked due to many people selling it and saying it was their private P2C.
-The soucre was developed by LeProxy and owned/made for Viusal's P2C (Ecstasy) please stay away from anyone selling this source
+The source was developed by LeProxy and made for Viusal's P2C (Ecstasy) please stay away from anyone selling this source
 
 
 
